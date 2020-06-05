@@ -1,6 +1,20 @@
+'use strict';
 const fs = require('fs');
 const path = require('path');
 const Cart = require('./cart');
+
+module.exports = (sequelize, DataTypes) => {
+  const Product = sequelize.define('Product', {
+    title: DataTypes.STRING,
+    imageUrl: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    price: DataTypes.DOUBLE
+  }, {});
+  Product.associate = function(models) {
+    // associations can be defined here
+  };
+  return Product;
+};
 
 const p = path.join(
   path.dirname(process.mainModule.filename),
