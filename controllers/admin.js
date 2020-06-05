@@ -1,4 +1,5 @@
-const Product = require('../models/product');
+const Products = require('../models/product');
+const { Product } = require('../models');
 
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', {
@@ -9,12 +10,12 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-    const title = req.body.title;
-    const imageUrl = req.body.imageUrl;
-    const price = req.body.price;
-    const description = req.body.description;
-    const product = new Product(null, title, imageUrl, description, price);
-    product.save();
+	const product = Product.create({
+		title: req.body.title, 
+		image_url: req.body.imageUrl,
+		description: req.body.description,
+		price: req.body.price
+    });
     res.redirect('/');
 };
 
@@ -24,15 +25,15 @@ exports.getEditProduct = (req, res, next) => {
         return es.redirect('/');
     }
     const prodId = req.params.productId;
-    Product.findById(prodId, product => {
-        if (!product) {
+    Products.findById(prodId, Products => {
+        if (!Products) {
             return es.redirect('/');
         }
         res.render('admin/edit-product', {
             pageTitle: 'Add Product',
             path: '/admin/add-product',
             editing: editMode,
-            product: product
+            product: Products
         });
     })
 };
@@ -43,23 +44,23 @@ exports.postEditProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    const product = new Product(productId, title, imageUrl, description, price);
-    product.save();
+    const Products = new Products(productId, title, imageUrl, description, price);
+    Products.save();
     res.redirect('/');
 };
 
 exports.deleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    Product.deleteById(prodId);
+    Products.deleteById(prodId);
     res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll(products => {
+    Product.findAll().then(function(products) {
         res.render('admin/products', {
-            prods: products,
-            pageTitle: 'Admin Products',
-            path: '/admin/products'
+          prods: products,
+          pageTitle: 'Admin Products',
+          path: '/admin/products'
         });
-    });
+    })
 };

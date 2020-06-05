@@ -1,4 +1,5 @@
-const Product = require('../models/product');
+const Products = require('../models/product');
+const { Product } = require('../models');
 
 exports.addProduct = (req, res, next) => {
 	res.render('admin/add-product', {
@@ -8,17 +9,22 @@ exports.addProduct = (req, res, next) => {
 };
 
 exports.postProduct = (req, res, next) => {
-	const product = new Product(req.body.title);
-	product.save();
+	const Products = Products.create({
+		title: this.title, 
+		image_url: this.imageUrl,
+		description: this.description,
+		price: this.price
+    });
+    console.log("Product auto-generated ID:", Products.id);
 	res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
-	Product.fetchAll(products => {
-        res.render('shop/product-list', {
-			prods: products, 
-			pageTitle: 'Shop', 
-			path: '/'
+	Product.findAll().then(function(products) {
+		res.render('shop/product-list', {
+		  prods: products,
+		  pageTitle: 'Shop',
+		  path: '/'
 		});
 	});
 };
