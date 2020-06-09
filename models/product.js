@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.DOUBLE,
   }, { timestamps: true, underscored: true});
   Product.associate = function(models) {
-    // associations can be defined here
+    // associations can be defined here live_2r_OghqZkZpluDXs-sOTwgN0xGDA76y5_-JAW9LB
   };
   return Product;
 };
