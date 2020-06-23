@@ -1,5 +1,4 @@
-const Products = require('../models/product');
-const { Product } = require('../models');
+const { product } = require('../models');
 
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', {
@@ -10,7 +9,7 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-	const product = Product.create({
+	product.create({
 		title: req.body.title, 
 		image_url: req.body.imageUrl,
 		description: req.body.description,
@@ -25,7 +24,7 @@ exports.getEditProduct = (req, res, next) => {
         return es.redirect('/');
     }
     const prodId = req.params.productId;
-    Product.findByPk(prodId).then(products => {
+    product.findByPk(prodId).then(products => {
         if (!products) {
             return es.redirect('/');
         }
@@ -44,7 +43,7 @@ exports.postEditProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
-    Product.update({
+    product.update({
         title: title,
         image_url: imageUrl,
         price: price,
@@ -62,7 +61,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    Product.destroy({
+    product.destroy({
         where: {
           id: prodId
         }
@@ -71,7 +70,7 @@ exports.deleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-    Product.findAll().then(function(products) {
+    product.findAll().then(function(products) {
         res.render('admin/products', {
           prods: products,
           pageTitle: 'Admin Products',

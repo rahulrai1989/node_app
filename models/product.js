@@ -3,14 +3,21 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('Product', {
+  const product = sequelize.define('product', {
     title: DataTypes.STRING,
     image_url: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.DOUBLE,
+    user_id: DataTypes.INTEGER,
   }, { timestamps: true, underscored: true});
-  Product.associate = function(models) {
-    // associations can be defined here
+  product.associate = function(models) {
+    product.associate = function(models) {
+      product.belongsTo(models.user, {
+        foreignKey: 'user_id',
+        constraints: true,
+        onDelete: 'CASCADE'
+      });
+    };
   };
-  return Product;
+  return product;
 };
