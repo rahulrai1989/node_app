@@ -9,11 +9,11 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-	product.create({
-		title: req.body.title, 
+    req.user.createProduct({
+        title: req.body.title, 
 		image_url: req.body.imageUrl,
 		description: req.body.description,
-		price: req.body.price
+        price: req.body.price,
     });
     res.redirect('/');
 };
@@ -70,7 +70,9 @@ exports.deleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-    product.findAll().then(function(products) {
+    req.user
+    .getProducts()
+    .then(function(products) {
         res.render('admin/products', {
           prods: products,
           pageTitle: 'Admin Products',
